@@ -34,8 +34,7 @@
                     type: "POST",
                     data: $(this).serialize(),
                     success: function (response) {
-                        $('#message').html('<p style="color: green;">Booking created successfully!</p>');
-                        $('#booking-form')[0].reset();
+                        window.location.href = "{{ url('/my-bookings') }}";
                     },
                     error: function (xhr) {
                         let errors = xhr.responseJSON.errors;

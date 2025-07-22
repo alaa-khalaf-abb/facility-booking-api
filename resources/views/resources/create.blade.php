@@ -19,6 +19,14 @@
         <label>Location:</label>
         <input type="text" name="location"><br><br>
 
+        <label>Category:</label>
+        <select name="category_id" required>
+            <option value="">Select Category</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select><br><br>
+
         <button type="submit">Save</button>
     </form>
 @endsection

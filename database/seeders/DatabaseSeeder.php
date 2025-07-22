@@ -30,5 +30,6 @@ class DatabaseSeeder extends Seeder
 
 
          $this->call(BookingStatusSeeder::class);
+        $this->call(CategorySeeder::class);
     }
 }

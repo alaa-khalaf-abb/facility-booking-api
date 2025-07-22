@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
         Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
         Route::get('/my-bookings', [BookingController::class, 'myBookings'])->name('bookings.my');
+        Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
     });
 
     // ADMIN-ONLY ROUTES
@@ -43,6 +44,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/bookings', [BookingController::class, 'adminIndex'])->name('admin.bookings');
         Route::post('/bookings/{id}/approve', [BookingController::class, 'approve'])->name('bookings.approve');
         Route::post('/bookings/{id}/reject', [BookingController::class, 'reject'])->name('bookings.reject');
-        Route::resource('/resources', ResourceController::class);
+    //    Route::resource('/resources', ResourceController::class);
     });
 });

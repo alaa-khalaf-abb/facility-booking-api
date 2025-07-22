@@ -30,14 +30,14 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-        return redirect('/dashboard'); // or wherever you want
+        return redirect('/my-bookings');
     }
 
     public function login(Request $request) {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect('/dashboard');
+            return redirect('/my-bookings');
         }
 
         return back()->withErrors([

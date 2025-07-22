@@ -35,7 +35,7 @@ class BookingController extends Controller
             'end_time' => $request->end_time,
         ]);
 
-        return redirect()->route('bookings.index')->with('success', 'Booking submitted.');
+        return redirect('/my-bookings')->with('success', 'Your booking request has been sent.');
     }
  public function approve($id)
 {
@@ -63,6 +63,26 @@ public function reject($id)
     return redirect()->back()->with('success', 'Booking rejected.');
 }
 
+    public function myBookings() {
+        $bookings = Booking::with(['resource', 'status'])
+            ->where('user_id', Auth::id())
+            ->orderByDesc('start_time')
+            ->get();
+        return view('bookings.my', compact('bookings'));
+    }
+
+    public function destroy($id) {
+        $booking = Booking::findOrFail($id);
+        if ($booking->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+        // Only allow cancel if pending
+        if (($booking->status->status ?? null) !== 'pending') {
+            return redirect('/my-bookings')->with('error', 'Only pending bookings can be cancelled.');
+        }
+        $booking->delete();
+        return redirect('/my-bookings')->with('success', 'Booking cancelled successfully.');
+    }
 
 
 }

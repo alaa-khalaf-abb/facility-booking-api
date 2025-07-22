@@ -20,6 +20,14 @@
         <label>Location:</label>
         <input type="text" name="location" value="{{ $resource->location }}"><br><br>
 
+        <label>Category:</label>
+        <select name="category_id" required>
+            <option value="">Select Category</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}" @if($resource->category_id == $category->id) selected @endif>{{ $category->name }}</option>
+            @endforeach
+        </select><br><br>
+
         <button type="submit">Update</button>
     </form>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Resource;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class ResourceController extends Controller
 {
@@ -13,7 +14,8 @@ class ResourceController extends Controller
     }
 
     public function create() {
-        return view('resources.create');
+        $categories = Category::all();
+        return view('resources.create', compact('categories'));
     }
 
     public function store(Request $request) {
@@ -22,6 +24,7 @@ class ResourceController extends Controller
             'description' => 'nullable',
             'capacity' => 'nullable|integer',
             'location' => 'nullable',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         Resource::create($request->all());
@@ -30,7 +33,8 @@ class ResourceController extends Controller
 
     public function edit($id) {
         $resource = Resource::findOrFail($id);
-        return view('resources.edit', compact('resource'));
+        $categories = Category::all();
+        return view('resources.edit', compact('resource', 'categories'));
     }
 
     public function update(Request $request, $id) {
@@ -41,6 +45,7 @@ class ResourceController extends Controller
             'description' => 'nullable',
             'capacity' => 'nullable|integer',
             'location' => 'nullable',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         $resource->update($request->all());
