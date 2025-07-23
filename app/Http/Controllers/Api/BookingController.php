@@ -102,4 +102,25 @@ public function reject($id)
     return response()->json(['message' => 'Booking rejected']);
 }
 
+    public function myBookings()
+    {
+        $bookings = Booking::with(['resource', 'status'])
+            ->where('user_id', auth()->id())
+            ->get();
+
+        return response()->json($bookings);
+    }
+
+    public function adminIndex()
+    {
+        if (auth()->user()->role !== 'admin') {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $bookings = Booking::with(['resource', 'user', 'status'])
+            ->get();
+
+        return response()->json($bookings);
+    }
+
 }

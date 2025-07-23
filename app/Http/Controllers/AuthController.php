@@ -8,71 +8,55 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function showLoginForm() {
-        return view('auth.login');
-    }
-
-    public function showRegisterForm() {
-        return view('auth.register');
-    }
-
-    public function register(Request $request) {
+    public function apiLogin(Request $request) {
         $request->validate([
-            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user,
+        ]);
+    }
+
+    public function apiRegister(Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|string|min:6|confirmed',
+            'role' => 'sometimes|in:user,admin',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'role' => $request->role ?? 'user',
         ]);
 
-        Auth::login($user);
-        if ($user->role === 'admin') {
-            return redirect('/admin/bookings');
-        }
-        return redirect('/my-bookings');
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'User registered successfully',
+            'token' => $token,
+            'user' => $user,
+        ], 201);
     }
 
-    public function login(Request $request) {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            if ($user->role === 'admin') {
-                return redirect('/admin/bookings');
-            }
-            return redirect('/my-bookings');
-        }
-
-        return back()->withErrors([
-            'email' => 'Invalid credentials.',
+    public function apiLogout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
+        
+        return response()->json([
+            'message' => 'Logged out successfully'
         ]);
-    }
-    public function apiLogin(Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        return response()->json(['error' => 'Invalid credentials'], 401);
-    }
-
-    $token = $user->createToken('api-token')->plainTextToken;
-
-    return response()->json([
-        'token' => $token,
-        'user' => $user,
-    ]);
-}
-
-    public function logout(Request $request) {
-        Auth::logout();
-        return redirect('/login');
     }
 }
