@@ -17,7 +17,7 @@
     </div>
 @endif
 
-    <a href="{{ route('bookings.create') }}">Make a New Booking</a>
+    <!-- <a href="{{ route('bookings.create') }}">Make a New Booking</a> -->
 
     <table border="1" cellpadding="10" cellspacing="0">
         <tr>
@@ -46,13 +46,8 @@
             @csrf
             <button type="submit" class="btn btn-danger btn-sm" onclick="disableButtons(this)">Reject</button>
         </form>
-    @else
-        <span class="badge 
-            {{ $booking->booking_status_id === 2 ? 'bg-success' : 'bg-danger' }}">
-            {{ $booking->booking_status->status ?? 'None' }}
-        </span>
     @endif
-@endif
+    @endif
 
 </td>
 

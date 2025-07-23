@@ -9,8 +9,9 @@ use App\Models\Category;
 class ResourceController extends Controller
 {
     public function index() {
-        $resources = Resource::all();
-        return view('resources.index', compact('resources'));
+        $resources = Resource::with('category')->get();
+        $categories = \App\Models\Category::all();
+        return view('resources.index', compact('resources', 'categories'));
     }
 
     public function create() {
@@ -53,7 +54,22 @@ class ResourceController extends Controller
     }
 
     public function destroy($id) {
-        Resource::findOrFail($id)->delete();
-        return redirect()->route('resources.index')->with('success', 'Resource deleted.');
+        $resource = Resource::findOrFail($id);
+        // Delete all related bookings first
+        $resource->bookings()->delete();
+        $resource->delete();
+        return redirect()->route('resources.index')->with('success', 'Resource and all related bookings deleted.');
+    }
+
+    public function ajaxIndex(Request $request) {
+        $query = Resource::with('category');
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+        $resources = $query->get();
+        return response()->json($resources);
     }
 }

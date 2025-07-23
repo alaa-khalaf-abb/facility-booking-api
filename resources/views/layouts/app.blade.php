@@ -22,10 +22,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 @auth
-                    <li class="nav-item"><a class="nav-link" href="/my-bookings">My Bookings</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/bookings/create">Book Resource</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/resources">Resources</a></li>
+                    @if(auth()->user()->role === 'user')
+                        <li class="nav-item"><a class="nav-link" href="/my-bookings">My Bookings</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/bookings/create">Book Resource</a></li>
+                    @elseif(auth()->user()->role === 'admin')
+                        <li class="nav-item"><a class="nav-link" href="/admin/bookings">All Bookings</a></li>
+                    @endif
                     <li class="nav-item"><form method="POST" action="{{ route('logout') }}">@csrf <button class="btn btn-link nav-link" type="submit">Logout</button></form></li>
                 @else
+                    <li class="nav-item"><a class="nav-link" href="/resources">Resources</a></li>
                     <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                 @endauth

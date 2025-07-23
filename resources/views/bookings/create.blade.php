@@ -11,7 +11,7 @@
         <label>Choose Resource:</label>
         <select name="resource_id" required>
             @foreach($resources as $resource)
-                <option value="{{ $resource->id }}">{{ $resource->name }}</option>
+                <option value="{{ $resource->id }}" @if(isset($selectedResourceId) && $selectedResourceId == $resource->id) selected @endif>{{ $resource->name }}</option>
             @endforeach
         </select><br><br>
 

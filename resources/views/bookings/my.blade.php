@@ -66,7 +66,9 @@
                         </table>
                     </div>
                 @endif
-                <a href="{{ route('bookings.create') }}" class="btn btn-primary mt-3">Make a New Booking</a>
+                @if(auth()->check() && auth()->user()->role === 'user')
+                    <a href="{{ route('bookings.create') }}" class="btn btn-primary mt-3">Make a New Booking</a>
+                @endif
             </div>
         </div>
     </div>

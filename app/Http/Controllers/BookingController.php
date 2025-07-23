@@ -17,7 +17,8 @@ class BookingController extends Controller
 
     public function create() {
         $resources = Resource::all();
-        return view('bookings.create', compact('resources'));
+        $selectedResourceId = request('resource_id');
+        return view('bookings.create', compact('resources', 'selectedResourceId'));
     }
 
     public function store(Request $request) {

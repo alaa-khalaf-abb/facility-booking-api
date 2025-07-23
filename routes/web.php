@@ -19,13 +19,18 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 use App\Http\Controllers\ResourceController;
 
-Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
-Route::get('/resources/create', [ResourceController::class, 'create'])->name('resources.create');
-Route::post('/resources', [ResourceController::class, 'store'])->name('resources.store');
-Route::get('/resources/{id}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
-Route::put('/resources/{id}', [ResourceController::class, 'update'])->name('resources.update');
-Route::delete('/resources/{id}', [ResourceController::class, 'destroy'])->name('resources.destroy');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
+    Route::get('/resources/ajax', [ResourceController::class, 'ajaxIndex'])->name('resources.ajax');
+});
 
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/resources/create', [ResourceController::class, 'create'])->name('resources.create');
+    Route::post('/resources', [ResourceController::class, 'store'])->name('resources.store');
+    Route::get('/resources/{id}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
+    Route::put('/resources/{id}', [ResourceController::class, 'update'])->name('resources.update');
+    Route::delete('/resources/{id}', [ResourceController::class, 'destroy'])->name('resources.destroy');
+});
 
 
 use App\Http\Controllers\BookingController;
@@ -44,6 +49,5 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/bookings', [BookingController::class, 'adminIndex'])->name('admin.bookings');
         Route::post('/bookings/{id}/approve', [BookingController::class, 'approve'])->name('bookings.approve');
         Route::post('/bookings/{id}/reject', [BookingController::class, 'reject'])->name('bookings.reject');
-    //    Route::resource('/resources', ResourceController::class);
     });
 });

@@ -6,27 +6,36 @@
 
     <form method="POST" action="{{ route('resources.store') }}">
         @csrf
+<table>
+       <tr>
+        <td> <label>Name:</label></td>
+       <td> <br><input type="text" name="name" required><br><br></td>
+       </tr>
+    <tr>
+       <td> <label>Description:</label></td>
+       <td> <br> <textarea name="description"></textarea><br><br></td>
+       </tr>
+    <tr>
+       <td> <label>Capacity:</label></td>
+       <td> <br> <input type="number" name="capacity"><br><br></td>
+       </tr>
+    <tr>
+       <td> <label>Location:</label></td>
+       <td> <br> <input type="text" name="location"><br><br></td>
 
-        <label>Name:</label>
-        <input type="text" name="name" required><br><br>
+    </tr>
 
-        <label>Description:</label>
-        <textarea name="description"></textarea><br><br>
-
-        <label>Capacity:</label>
-        <input type="number" name="capacity"><br><br>
-
-        <label>Location:</label>
-        <input type="text" name="location"><br><br>
-
-        <label>Category:</label>
-        <select name="category_id" required>
+       <tr><td> <label>Category:</label></td>
+       <td> <br> <select name="category_id" required> 
             <option value="">Select Category</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
             @endforeach
-        </select><br><br>
+        </select><br><br></td>
+       </tr>
+    <tr>
+       <td> <button type="submit">Save</button></td>
+       </tr>
 
-        <button type="submit">Save</button>
     </form>
 @endsection
