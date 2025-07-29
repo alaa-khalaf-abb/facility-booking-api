@@ -1,27 +1,28 @@
 {
 	"info": {
-		"_postman_id": "facility-booking-api",
+		"_postman_id": "dfd20edd-26d4-4958-b361-78d854b921c7",
 		"name": "Facility Booking API",
-		"description": "Complete API collection for the Facility Booking system",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44451253",
+		"_collection_link": "https://alaakhalaf-8665888.postman.co/workspace/8863a52e-f423-4530-8fbc-63e4e1c5313d/collection/44451253-dfd20edd-26d4-4958-b361-78d854b921c7?action=share&source=collection_link&creator=44451253"
 	},
 	"item": [
 		{
-			"name": "Authentication",
+			"name": "Auth",
 			"item": [
 				{
 					"name": "Register User",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"role\": \"user\"\n}"
+							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"role\": \"user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/register",
@@ -36,18 +37,44 @@
 					"response": []
 				},
 				{
-					"name": "Login",
+					"name": "Register Admin",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+							"raw": "{\n    \"name\": \"Test Admin\",\n    \"email\": \"testadmin@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"role\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/login",
@@ -62,22 +89,26 @@
 					"response": []
 				},
 				{
-					"name": "Get Current User",
+					"name": "Login Admin",
 					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testadmin@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
 							}
-						],
+						},
 						"url": {
-							"raw": "{{base_url}}/user",
+							"raw": "{{base_url}}/login",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"user"
+								"login"
 							]
 						}
 					},
@@ -90,7 +121,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -100,6 +132,29 @@
 							],
 							"path": [
 								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user"
 							]
 						}
 					},
@@ -117,7 +172,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -139,7 +195,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -156,22 +213,24 @@
 					"response": []
 				},
 				{
-					"name": "Create Resource (Admin)",
+					"name": "Create Resource",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Meeting Room B\",\n    \"description\": \"Small meeting room\",\n    \"capacity\": 8,\n    \"location\": \"Floor 2\",\n    \"category_id\": 1\n}"
+							"raw": "{\n    \"name\": \"Meeting Room B\",\n    \"description\": \"Small meeting room\",\n    \"capacity\": 8,\n    \"location\": \"Floor 2\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/resources",
@@ -186,22 +245,24 @@
 					"response": []
 				},
 				{
-					"name": "Update Resource (Admin)",
+					"name": "Update Resource",
 					"request": {
 						"method": "PUT",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Updated Room Name\",\n    \"capacity\": 15\n}"
+							"raw": "{\n    \"name\": \"Updated Room Name\",\n    \"capacity\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/resources/1",
@@ -217,13 +278,14 @@
 					"response": []
 				},
 				{
-					"name": "Delete Resource (Admin)",
+					"name": "Delete Resource",
 					"request": {
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -251,7 +313,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -273,7 +336,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -290,22 +354,24 @@
 					"response": []
 				},
 				{
-					"name": "Create Booking (User)",
+					"name": "Create Booking",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"resource_id\": 1,\n    \"start_time\": \"2024-01-15T09:00:00\",\n    \"end_time\": \"2024-01-15T11:00:00\"\n}"
+							"raw": "{\n    \"resource_id\": 1,\n    \"start_time\": \"2024-01-15T09:00:00\",\n    \"end_time\": \"2024-01-15T11:00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/bookings",
@@ -325,17 +391,19 @@
 						"method": "PUT",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"start_time\": \"2024-01-15T10:00:00\",\n    \"end_time\": \"2024-01-15T12:00:00\"\n}"
+							"raw": "{\n    \"start_time\": \"2024-01-15T10:00:00\",\n    \"end_time\": \"2024-01-15T12:00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/bookings/1",
@@ -351,13 +419,14 @@
 					"response": []
 				},
 				{
-					"name": "Delete Booking (User)",
+					"name": "Delete Booking",
 					"request": {
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -374,13 +443,14 @@
 					"response": []
 				},
 				{
-					"name": "Get My Bookings (User)",
+					"name": "Get My Bookings",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -402,7 +472,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -419,13 +490,14 @@
 					"response": []
 				},
 				{
-					"name": "Approve Booking (Admin)",
+					"name": "Approve Booking",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -443,13 +515,14 @@
 					"response": []
 				},
 				{
-					"name": "Reject Booking (Admin)",
+					"name": "Reject Booking",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -479,4 +552,4 @@
 			"value": ""
 		}
 	]
-} 
+}
