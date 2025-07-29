@@ -27,4 +27,39 @@ class Booking extends Model
     {
         return $this->belongsTo(BookingStatus::class, 'booking_status_id');
     }
+
+    /**
+     * Check if this booking overlaps with any approved bookings for the same resource
+     */
+    public function hasOverlappingApprovedBookings()
+    {
+        return static::where('resource_id', $this->resource_id)
+            ->where('id', '!=', $this->id)
+            ->where('booking_status_id', 2) // Approved status
+            ->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('start_time', '<', $this->end_time)
+                      ->where('end_time', '>', $this->start_time);
+                });
+            })
+            ->exists();
+    }
+
+    /**
+     * Get overlapping approved bookings for this booking
+     */
+    public function getOverlappingApprovedBookings()
+    {
+        return static::where('resource_id', $this->resource_id)
+            ->where('id', '!=', $this->id)
+            ->where('booking_status_id', 2) // Approved status
+            ->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('start_time', '<', $this->end_time)
+                      ->where('end_time', '>', $this->start_time);
+                });
+            })
+            ->with(['user', 'resource'])
+            ->get();
+    }
 }

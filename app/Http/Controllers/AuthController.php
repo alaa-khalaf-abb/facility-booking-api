@@ -16,22 +16,44 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+        if (!$user) {
+            return response()->json([
+                'error' => 'User not found',
+                'message' => 'No user found with this email address'
+            ], 404);
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'error' => 'Invalid password',
+                'message' => 'The password provided is incorrect'
+            ], 401);
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
+            'message' => 'Login successful',
             'token' => $token,
             'user' => $user,
         ]);
     }
 
     public function apiRegister(Request $request) {
+        // First check if user already exists
+        $existingUser = User::where('email', $request->email)->first();
+        
+        if ($existingUser) {
+            return response()->json([
+                'error' => 'User already exists',
+                'message' => 'A user with this email address is already registered',
+                'email' => $request->email
+            ], 409); // 409 Conflict is appropriate for duplicate resource
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email',
             'password' => 'required|string|min:6|confirmed',
             'role' => 'sometimes|in:user,admin',
         ]);
