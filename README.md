@@ -41,14 +41,10 @@ A Laravel 12 REST API for managing facility resources (rooms/equipment/vehicles)
 
 ## Authentication flow
 
-1. Register or login via `/api/register` or `/api/login`
-2. Copy returned bearer token
-3. Call protected endpoints with:
-
-```http
-Authorization: ******
-Accept: application/json
-```
+1. Register or login via `/api/register` or `/api/login`.
+2. Copy returned bearer token.
+3. Call protected endpoints with an `Accept: application/json` header.
+4. Include an `Authorization` header that uses the `Bearer` scheme and your login token.
 
 ## API overview
 
